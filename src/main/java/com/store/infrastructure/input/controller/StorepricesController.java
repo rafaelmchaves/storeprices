@@ -1,4 +1,4 @@
-package com.store;
+package com.store.infrastructure.input.controller;
 
 import io.micronaut.http.annotation.*;
 
