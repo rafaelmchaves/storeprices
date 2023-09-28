@@ -3,14 +3,17 @@ package com.store.infrastructure.input.controller;
 import com.store.infrastructure.input.controller.requests.ProductRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller("/products")
 public class ProductController {
 
-    @Put(uri="/{id}", consumes="json/application")
-    public HttpResponse<Void> update(@RequestBody(required = true, useParameterTypeSchema = true, description = "Product to be updated")
-                                         ProductRequest productRequest, @PathVariable String id) {
+    @Put(uri="/{id}", consumes="application/json")
+    public HttpResponse<Void> update(@Body ProductRequest productRequest, @PathVariable String id) {
+
+        log.info("productRequest name: {}, price: {}, storeName: {} ", productRequest.getName(), productRequest.getPrice(),
+                productRequest.getStore().getName());
 
         return HttpResponse.noContent();
     }
