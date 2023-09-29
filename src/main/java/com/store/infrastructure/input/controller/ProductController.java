@@ -3,7 +3,6 @@ package com.store.infrastructure.input.controller;
 import com.store.core.model.Attribute;
 import com.store.core.model.Product;
 import com.store.core.usecases.ProductUseCase;
-import com.store.infrastructure.input.controller.requests.AttributeRequest;
 import com.store.infrastructure.input.controller.requests.ProductRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
