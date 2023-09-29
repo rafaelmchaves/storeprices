@@ -3,6 +3,7 @@ package com.store.infrastructure.input.controller;
 import com.store.core.model.Attribute;
 import com.store.core.model.Product;
 import com.store.core.usecases.ProductUseCase;
+import com.store.infrastructure.input.controller.requests.AttributeRequest;
 import com.store.infrastructure.input.controller.requests.ProductRequest;
 import com.store.infrastructure.input.controller.response.AttributeResponse;
 import com.store.infrastructure.input.controller.response.ProductResponse;
@@ -25,12 +26,7 @@ public class ProductController {
 
         final var attributeRequest = productRequest.getAttributeRequest();
 
-        final var product = Product.builder()
-                .name(productRequest.getName())
-                .brand(productRequest.getBrand())
-                .attribute(Attribute.builder().amount(attributeRequest.getAmount())
-                        .amountType(attributeRequest.getAmountType()).build())
-                .build();
+        final var product = buildProduct(productRequest, attributeRequest);
 
         this.productUseCase.save(product);
 
@@ -42,16 +38,27 @@ public class ProductController {
 
         final var foundProducts = this.productUseCase.query(name);
 
-        final var response = foundProducts.stream().map(product -> {
-            final var attributes = product.getAttribute();
-
-            return ProductResponse.builder().id(product.getId()).name(product.getName()).brand(product.getBrand())
-                    .attributes(AttributeResponse.builder().amount(attributes.getAmount())
-                            .amountType(attributes.getAmountType()).colours(attributes.getColours())
-                            .build())
-                    .build();
-        }).toList();
+        final var response = foundProducts.stream().map(ProductController::buildProductResponse).toList();
 
         return HttpResponse.ok(response);
+    }
+
+    private static Product buildProduct(ProductRequest productRequest, AttributeRequest attributeRequest) {
+        return Product.builder()
+                .name(productRequest.getName())
+                .brand(productRequest.getBrand())
+                .attribute(Attribute.builder().amount(attributeRequest.getAmount())
+                        .amountType(attributeRequest.getAmountType()).build())
+                .build();
+    }
+
+    private static ProductResponse buildProductResponse(Product product) {
+        final var attributes = product.getAttribute();
+
+        return ProductResponse.builder().id(product.getId()).name(product.getName()).brand(product.getBrand())
+                .attributes(AttributeResponse.builder().amount(attributes.getAmount())
+                        .amountType(attributes.getAmountType()).colours(attributes.getColours())
+                        .build())
+                .build();
     }
 }
