@@ -1,4 +1,4 @@
-package com.store.infrastructure.output.mongo.entity;
+package com.store.infrastructure.input.controller.response;
 
 import com.store.core.model.AmountType;
 import io.micronaut.core.annotation.Introspected;
@@ -8,12 +8,11 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 
-@Getter
-@Builder
-@Introspected
-@Serdeable.Deserializable
 @Serdeable.Serializable
-public class AttributeEmbedded {
+@Introspected
+@Builder
+@Getter
+public class AttributeResponse {
 
     private AmountType amountType;
 

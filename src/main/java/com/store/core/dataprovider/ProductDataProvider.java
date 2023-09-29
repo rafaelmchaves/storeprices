@@ -6,4 +6,6 @@ public interface ProductDataProvider {
 
     void save(Product product);
 
+    Product query(String name);
+
 }

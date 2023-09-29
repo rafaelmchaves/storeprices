@@ -4,6 +4,8 @@ import com.store.core.model.Attribute;
 import com.store.core.model.Product;
 import com.store.core.usecases.ProductUseCase;
 import com.store.infrastructure.input.controller.requests.ProductRequest;
+import com.store.infrastructure.input.controller.response.AttributeResponse;
+import com.store.infrastructure.input.controller.response.ProductResponse;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ public class ProductController {
 
     private final ProductUseCase productUseCase;
 
-    @Post(uri="/", consumes="application/json")
+    @Post(consumes="application/json")
     public HttpResponse<Void> create(@Body ProductRequest productRequest) {
 
         final var attributeRequest = productRequest.getAttributeRequest();
@@ -31,5 +33,19 @@ public class ProductController {
         this.productUseCase.save(product);
 
         return HttpResponse.noContent();
+    }
+
+    @Get(produces = "application/json")
+    public HttpResponse<ProductResponse> query(@QueryValue String name) {
+
+        final var product = this.productUseCase.query(name);
+        final var attributes = product.getAttribute();
+
+        final var response = ProductResponse.builder().id(product.getId()).name(product.getName()).brand(product.getBrand())
+                .attributes(AttributeResponse.builder().amount(attributes.getAmount())
+                        .amountType(attributes.getAmountType()).colours(attributes.getColours())
+                        .build())
+                .build();
+        return HttpResponse.ok(response);
     }
 }

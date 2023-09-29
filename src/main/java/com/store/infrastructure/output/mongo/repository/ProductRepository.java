@@ -7,4 +7,6 @@ import org.bson.types.ObjectId;
 
 @MongoRepository
 public interface ProductRepository extends CrudRepository<ProductEntity, ObjectId> {
+
+    ProductEntity findByNameLike(String name);
 }

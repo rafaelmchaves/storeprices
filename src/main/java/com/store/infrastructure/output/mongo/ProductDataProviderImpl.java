@@ -1,6 +1,7 @@
 package com.store.infrastructure.output.mongo;
 
 import com.store.core.dataprovider.ProductDataProvider;
+import com.store.core.model.Attribute;
 import com.store.core.model.Product;
 import com.store.infrastructure.output.mongo.entity.AttributeEmbedded;
 import com.store.infrastructure.output.mongo.entity.ProductEntity;
@@ -23,5 +24,21 @@ public class ProductDataProviderImpl implements ProductDataProvider {
                 .build();
 
         productRepository.save(entity);
+    }
+
+    @Override
+    public Product query(String name) {
+
+        final var result = productRepository.findByNameLike(name);
+        final var attributeResult = result.getAttributes();
+
+        return Product.builder()
+                .id(result.getId().toString())
+                .name(result.getName()).brand(result.getBrand())
+                .attribute(Attribute.builder().amountType(attributeResult.getAmountType())
+                        .amount(attributeResult.getAmount())
+                        .colours(attributeResult.getColours())
+                        .build())
+                .build();
     }
 }
