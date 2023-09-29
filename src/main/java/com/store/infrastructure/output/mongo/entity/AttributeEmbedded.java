@@ -2,7 +2,6 @@ package com.store.infrastructure.output.mongo.entity;
 
 import com.store.core.model.AmountType;
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.serde.annotation.SerdeImport;
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.Builder;
 import lombok.Getter;
