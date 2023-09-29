@@ -19,11 +19,7 @@ public class ProductRequest implements Serializable {
     @JsonProperty(required = true)
     private String name;
 
-    @JsonProperty(required = true)
-    private String price;
-
-    @JsonProperty(required = true)
-    private StoreRequest store;
+    private String brand;
 
     private AttributeRequest attributeRequest;
 

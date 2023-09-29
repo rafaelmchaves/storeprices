@@ -9,11 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller("/products")
 public class ProductController {
 
-    @Put(uri="/{id}", consumes="application/json")
-    public HttpResponse<Void> update(@Body ProductRequest productRequest, @PathVariable String id) {
-
-        log.info("productRequest name: {}, price: {}, storeName: {} ", productRequest.getName(), productRequest.getPrice(),
-                productRequest.getStore().getName());
+    @Post(uri="/", consumes="application/json")
+    public HttpResponse<Void> create(@Body ProductRequest productRequest) {
 
         return HttpResponse.noContent();
     }
