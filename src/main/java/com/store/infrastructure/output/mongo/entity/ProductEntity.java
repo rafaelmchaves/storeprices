@@ -1,5 +1,6 @@
 package com.store.infrastructure.output.mongo.entity;
 
+import com.store.core.model.ProductType;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
@@ -21,7 +22,10 @@ public class ProductEntity {
     private ObjectId id;
 
     private String name;
+
     private String brand;
+
+    private ProductType type;
 
     private AttributeEmbedded attributes;
 }

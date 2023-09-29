@@ -47,6 +47,7 @@ public class ProductController {
         return Product.builder()
                 .name(productRequest.getName())
                 .brand(productRequest.getBrand())
+                .type(productRequest.getType())
                 .attribute(Attribute.builder().amount(attributeRequest.getAmount())
                         .amountType(attributeRequest.getAmountType()).build())
                 .build();
@@ -56,6 +57,7 @@ public class ProductController {
         final var attributes = product.getAttribute();
 
         return ProductResponse.builder().id(product.getId()).name(product.getName()).brand(product.getBrand())
+                .type(product.getType())
                 .attributes(AttributeResponse.builder().amount(attributes.getAmount())
                         .amountType(attributes.getAmountType()).colours(attributes.getColours())
                         .build())

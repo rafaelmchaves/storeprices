@@ -20,6 +20,7 @@ public class ProductDataProviderImpl implements ProductDataProvider {
     public void save(Product product) {
 
         final var entity = ProductEntity.builder().name(product.getName()).brand(product.getBrand())
+                .type(product.getType())
                 .attributes(AttributeEmbedded.builder().amountType(product.getAttribute().getAmountType())
                         .amount(product.getAttribute().getAmount())
                         .build())
@@ -38,6 +39,7 @@ public class ProductDataProviderImpl implements ProductDataProvider {
             return Product.builder()
                     .id(productEntity.getId().toString())
                     .name(productEntity.getName()).brand(productEntity.getBrand())
+                    .type(productEntity.getType())
                     .attribute(Attribute.builder().amountType(attributeResult.getAmountType())
                             .amount(attributeResult.getAmount())
                             .colours(attributeResult.getColours())

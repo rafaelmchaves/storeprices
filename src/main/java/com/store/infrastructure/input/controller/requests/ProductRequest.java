@@ -1,6 +1,7 @@
 package com.store.infrastructure.input.controller.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.store.core.model.ProductType;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.Builder;
@@ -23,4 +24,5 @@ public class ProductRequest implements Serializable {
 
     private AttributeRequest attributeRequest;
 
+    private ProductType type;
 }
