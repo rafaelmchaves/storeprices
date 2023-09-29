@@ -6,6 +6,8 @@ import com.store.core.usecases.ProductUseCase;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Singleton
 public class ProductUseCaseImpl implements ProductUseCase {
@@ -18,7 +20,7 @@ public class ProductUseCaseImpl implements ProductUseCase {
     }
 
     @Override
-    public Product query(String name) {
+    public List<Product> query(String name) {
         return productDataProvider.query(name);
     }
 }

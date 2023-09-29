@@ -5,8 +5,10 @@ import io.micronaut.data.mongodb.annotation.MongoRepository;
 import io.micronaut.data.repository.CrudRepository;
 import org.bson.types.ObjectId;
 
+import java.util.List;
+
 @MongoRepository
 public interface ProductRepository extends CrudRepository<ProductEntity, ObjectId> {
 
-    ProductEntity findByNameLike(String name);
+    List<ProductEntity> findByNameLike(String name);
 }

@@ -11,6 +11,8 @@ import io.micronaut.http.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Slf4j
 @Controller("/products")
@@ -36,16 +38,20 @@ public class ProductController {
     }
 
     @Get(produces = "application/json")
-    public HttpResponse<ProductResponse> query(@QueryValue String name) {
+    public HttpResponse<List<ProductResponse>> query(@QueryValue String name) {
 
-        final var product = this.productUseCase.query(name);
-        final var attributes = product.getAttribute();
+        final var foundProducts = this.productUseCase.query(name);
 
-        final var response = ProductResponse.builder().id(product.getId()).name(product.getName()).brand(product.getBrand())
-                .attributes(AttributeResponse.builder().amount(attributes.getAmount())
-                        .amountType(attributes.getAmountType()).colours(attributes.getColours())
-                        .build())
-                .build();
+        final var response = foundProducts.stream().map(product -> {
+            final var attributes = product.getAttribute();
+
+            return ProductResponse.builder().id(product.getId()).name(product.getName()).brand(product.getBrand())
+                    .attributes(AttributeResponse.builder().amount(attributes.getAmount())
+                            .amountType(attributes.getAmountType()).colours(attributes.getColours())
+                            .build())
+                    .build();
+        }).toList();
+
         return HttpResponse.ok(response);
     }
 }

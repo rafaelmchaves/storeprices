@@ -2,10 +2,12 @@ package com.store.core.dataprovider;
 
 import com.store.core.model.Product;
 
+import java.util.List;
+
 public interface ProductDataProvider {
 
     void save(Product product);
 
-    Product query(String name);
+    List<Product> query(String name);
 
 }
