@@ -3,16 +3,16 @@ package com.store.core.model;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter
-public class ProductPrice {
+public class Price {
 
     private Product product;
 
-    private String price;
+    private BigDecimal price;
 
     private Store store;
 
