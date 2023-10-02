@@ -5,8 +5,6 @@ import com.store.core.dataprovider.ProductDataProvider;
 import com.store.core.dataprovider.StoreDataProvider;
 import com.store.core.model.Price;
 import com.store.core.usecases.PriceUseCase;
-import com.store.core.usecases.ProductUseCase;
-import com.store.core.usecases.StoreUseCase;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +24,10 @@ public class PriceUseCaseImpl implements PriceUseCase {
         final var product = productDataProvider.findById(price.getProduct().getId());
         price.setProduct(product);
 
-        //TODO find the store by id
+        final var store = storeDataProvider.findById(price.getStore().getId());
+        price.setStore(store);
 
-        //TODO add new price in a list of price
+        priceDataProvider.add(price);
+
     }
 }

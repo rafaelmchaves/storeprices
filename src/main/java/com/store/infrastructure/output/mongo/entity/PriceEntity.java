@@ -27,7 +27,7 @@ public class PriceEntity {
 
     private BigDecimal price;
 
-    private ProductEntity product;
+    private ProductEmbedded product;
 
-    private StoreEntity store;
+    private StoreEmbedded store;
 }

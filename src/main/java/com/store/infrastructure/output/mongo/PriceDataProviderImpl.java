@@ -24,8 +24,8 @@ public class PriceDataProviderImpl implements PriceDataProvider {
     public void add(Price price) {
 
         final var priceEntity = PriceEntity.builder().price(price.getPrice())
-                .product(productMapper.toProductEntity(price.getProduct()))
-                .store(storeMapper.toStoreEntity(price.getStore()))
+                .product(productMapper.toProductEmbedded(price.getProduct()))
+                .store(storeMapper.toStoreEmbedded(price.getStore()))
                 .creationDate(LocalDateTime.now())
                 .build();
 
