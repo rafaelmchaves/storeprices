@@ -7,6 +7,7 @@ import com.store.infrastructure.output.mongo.mapper.ProductMapper;
 import com.store.infrastructure.output.mongo.repository.ProductRepository;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -31,18 +32,18 @@ public class ProductDataProviderImpl implements ProductDataProvider {
 
         final var result = productRepository.findByNameLike(name);
 
-        return result.stream().map(productEntity -> {
-            final var attributeResult = productEntity.getAttributes();
-            return Product.builder()
-                    .id(productEntity.getId().toString())
-                    .name(productEntity.getName()).brand(productEntity.getBrand())
-                    .type(productEntity.getType())
-                    .attribute(Attribute.builder().amountType(attributeResult.getAmountType())
-                            .amount(attributeResult.getAmount())
-                            .colours(attributeResult.getColours())
-                            .build())
-                    .build();
-        }).toList();
+        return result.stream().map(productMapper::toProductModel).toList();
 
+    }
+
+    @Override
+    public Product findById(String id) {
+        final var result = productRepository.findById(new ObjectId(id));
+        if (result.isPresent()) {
+            final var entity = result.get();
+            return productMapper.toProductModel(entity);
+        }
+
+        return null;
     }
 }

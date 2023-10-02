@@ -17,4 +17,18 @@ public class ProductMapper {
                         .build())
                 .build();
     }
+
+    public Product toProductModel(ProductEntity productEntity) {
+        final var attributeResult = productEntity.getAttributes();
+        return Product.builder()
+                .id(productEntity.getId().toString())
+                .name(productEntity.getName()).brand(productEntity.getBrand())
+                .type(productEntity.getType())
+                .attribute(Attribute.builder().amountType(attributeResult.getAmountType())
+                        .amount(attributeResult.getAmount())
+                        .colours(attributeResult.getColours())
+                        .build())
+                .build();
+    }
+
 }

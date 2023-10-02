@@ -10,4 +10,6 @@ public interface ProductDataProvider {
 
     List<Product> query(String name);
 
+    Product findById(String id);
+
 }
