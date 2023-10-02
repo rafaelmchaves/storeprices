@@ -6,6 +6,8 @@ import com.store.core.usecases.StoreUseCase;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Singleton
 public class StoreUseCaseImpl implements StoreUseCase {
@@ -17,5 +19,10 @@ public class StoreUseCaseImpl implements StoreUseCase {
 
         return this.storeDataProvider.save(store);
 
+    }
+
+    @Override
+    public List<Store> query(String name) {
+        return this.storeDataProvider.query(name);
     }
 }

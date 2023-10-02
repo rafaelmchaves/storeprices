@@ -7,6 +7,8 @@ import com.store.infrastructure.output.mongo.repository.StoreRepository;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Singleton
 public class StoreDataProviderImpl implements StoreDataProvider {
@@ -19,6 +21,18 @@ public class StoreDataProviderImpl implements StoreDataProvider {
         final var storeEntity = StoreEntity.builder().name(store.getName()).city(store.getCity()).type(store.getType()).build();
         return this.repository.save(storeEntity).getId().toString();
 
+    }
+
+    @Override
+    public List<Store> query(String name) {
+        final var result = this.repository.findByNameLike(name);
+        return result.stream().map(
+                storeEntity -> Store.builder().id(storeEntity.getId().toString())
+                .name(storeEntity.getName())
+                        .city(storeEntity.getCity())
+                        .type(storeEntity.getType())
+                        .build()
+        ).toList();
     }
 
 }
