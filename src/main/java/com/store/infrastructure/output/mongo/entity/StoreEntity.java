@@ -1,6 +1,6 @@
 package com.store.infrastructure.output.mongo.entity;
 
-import com.store.core.model.ProductType;
+import com.store.core.model.StoreType;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
@@ -12,20 +12,16 @@ import org.bson.types.ObjectId;
 
 @Getter
 @Builder
-@MappedEntity(value = "products")
-public class ProductEntity {
+@MappedEntity(value = "stores")
+public class StoreEntity {
 
     @Id
     @GeneratedValue
     @BsonId
     @BsonProperty(value = "_id")
     private ObjectId id;
-
     private String name;
+    private String city;
+    private StoreType type;
 
-    private String brand;
-
-    private ProductType type;
-
-    private AttributeEmbedded attributes;
 }
