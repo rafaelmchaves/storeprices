@@ -1,6 +1,5 @@
 package com.store.infrastructure.output.mongo.repository;
 
-import com.store.infrastructure.output.mongo.entity.ProductEntity;
 import com.store.infrastructure.output.mongo.entity.StoreEntity;
 import io.micronaut.data.mongodb.annotation.MongoRepository;
 import io.micronaut.data.repository.CrudRepository;
