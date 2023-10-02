@@ -8,6 +8,8 @@ import com.store.infrastructure.input.controller.requests.ProductRequest;
 import com.store.infrastructure.input.controller.response.AttributeResponse;
 import com.store.infrastructure.input.controller.response.ProductResponse;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +24,14 @@ public class ProductController {
     private final ProductUseCase productUseCase;
 
     @Post(consumes="application/json")
-    public HttpResponse<Void> create(@Body ProductRequest productRequest) {
+    public MutableHttpResponse<Object> create(@Body ProductRequest productRequest) {
         final var attributeRequest = productRequest.getAttributeRequest();
 
         final var product = buildProduct(productRequest, attributeRequest);
 
-        this.productUseCase.save(product);
+        final var id = this.productUseCase.save(product);
 
-        return HttpResponse.noContent();
+        return HttpResponse.status(HttpStatus.CREATED).header("product_id", id);
     }
 
     @Get(produces = "application/json")

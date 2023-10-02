@@ -19,10 +19,10 @@ public class ProductDataProviderImpl implements ProductDataProvider {
     private final ProductMapper productMapper;
 
     @Override
-    public void save(Product product) {
+    public String save(Product product) {
         final var entity = productMapper.toProductEntity(product);
 
-        productRepository.save(entity);
+        return productRepository.save(entity).getId().toString();
     }
 
     @Override

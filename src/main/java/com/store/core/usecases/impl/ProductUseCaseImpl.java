@@ -15,8 +15,8 @@ public class ProductUseCaseImpl implements ProductUseCase {
     private final ProductDataProvider productDataProvider;
 
     @Override
-    public void save(Product product) {
-        productDataProvider.save(product);
+    public String save(Product product) {
+       return productDataProvider.save(product);
     }
 
     @Override

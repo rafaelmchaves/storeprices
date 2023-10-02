@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProductDataProvider {
 
-    void save(Product product);
+    String save(Product product);
 
     List<Product> query(String name);
 

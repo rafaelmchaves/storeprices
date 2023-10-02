@@ -4,5 +4,6 @@ public enum AmountType {
 
     WEIGHT_KG,
     VOLUME_LITERS,
-    UNITS
+    UNITS,
+    USE_PER_MONTH
 }
