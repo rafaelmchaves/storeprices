@@ -20,9 +20,9 @@ public class PriceDataProviderImpl implements PriceDataProvider {
     private final ProductMapper productMapper;
 
     private final StoreMapper storeMapper;
+
     @Override
     public void add(Price price) {
-
         final var priceEntity = PriceEntity.builder().price(price.getPrice())
                 .product(productMapper.toProductEmbedded(price.getProduct()))
                 .store(storeMapper.toStoreEmbedded(price.getStore()))

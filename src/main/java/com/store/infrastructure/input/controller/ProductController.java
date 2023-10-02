@@ -23,7 +23,6 @@ public class ProductController {
 
     @Post(consumes="application/json")
     public HttpResponse<Void> create(@Body ProductRequest productRequest) {
-
         final var attributeRequest = productRequest.getAttributeRequest();
 
         final var product = buildProduct(productRequest, attributeRequest);
@@ -35,7 +34,6 @@ public class ProductController {
 
     @Get(produces = "application/json")
     public HttpResponse<List<ProductResponse>> query(@QueryValue String name) {
-
         final var foundProducts = this.productUseCase.query(name);
 
         final var response = foundProducts.stream().map(ProductController::buildProductResponse).toList();

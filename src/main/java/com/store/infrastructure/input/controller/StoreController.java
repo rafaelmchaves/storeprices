@@ -20,7 +20,6 @@ public class StoreController {
 
     @Post(consumes="application/json")
     public HttpResponse<Void> create(@Body StoreCreationRequest storeCreationRequest) {
-
         final var store = Store.builder().name(storeCreationRequest.getName()).type(storeCreationRequest.getType())
                 .city(storeCreationRequest.getCity()).build();
 
@@ -31,7 +30,6 @@ public class StoreController {
 
     @Get(produces = "application/json")
     public HttpResponse<List<StoreResponse>> query(@QueryValue String name) {
-
         final var storeList = this.useCase.query(name);
 
         final var storeResponse = storeList.stream().map(store ->
@@ -41,6 +39,5 @@ public class StoreController {
                 .toList();
 
         return HttpResponse.ok(storeResponse);
-
     }
 }

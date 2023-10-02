@@ -9,7 +9,6 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.http.annotation.Put;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +21,6 @@ public class PriceController {
 
     @Post(consumes = "application/json")
     public HttpResponse<Void> update(@Body PriceRequest priceRequest) {
-
         final var price = Price.builder().price(priceRequest.getPrice()).product(
                 Product.builder().id(priceRequest.getProductId())
                         .build())

@@ -20,7 +20,6 @@ public class StoreDataProviderImpl implements StoreDataProvider {
 
     @Override
     public String save(Store store) {
-
         final var storeEntity = storeMapper.toStoreEntity(store);
         return this.repository.save(storeEntity).getId().toString();
 
@@ -34,7 +33,6 @@ public class StoreDataProviderImpl implements StoreDataProvider {
 
     @Override
     public Store findById(String id) {
-
         final var result = this.repository.findById(new ObjectId(id));
         return result.map(storeMapper::toStoreModel).orElse(null);
 
