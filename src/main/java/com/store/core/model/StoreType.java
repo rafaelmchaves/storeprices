@@ -27,5 +27,6 @@ public enum StoreType {
     CUT_HAIR,
     COURSES,
     GYM,
-    CAR_MECHANIC_OFFICE
+    CAR_MECHANIC_OFFICE,
+    TELECOMMUNICATION_COMPANY
 }
