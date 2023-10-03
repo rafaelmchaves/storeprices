@@ -1,3 +1,11 @@
+# Adding Prices of a Product
+
+Adding prices of a product and calculating the inflation during a period by product, product type and region
+
+## Clean Arch Example
+
+This code was based in clean arch principles, dividing the code between infrastructure and non-infrastructure(into core package) classes.
+
 ## Micronaut 4.1.2 Documentation
 
 - [User Guide](https://docs.micronaut.io/4.1.2/guide/index.html)
