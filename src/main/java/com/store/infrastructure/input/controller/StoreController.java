@@ -5,6 +5,8 @@ import com.store.core.usecases.StoreUseCase;
 import com.store.infrastructure.input.controller.requests.StoreCreationRequest;
 import com.store.infrastructure.input.controller.response.StoreResponse;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +21,13 @@ public class StoreController {
     private final StoreUseCase useCase;
 
     @Post(consumes="application/json")
-    public HttpResponse<Void> create(@Body StoreCreationRequest storeCreationRequest) {
+    public MutableHttpResponse<Object> create(@Body StoreCreationRequest storeCreationRequest) {
         final var store = Store.builder().name(storeCreationRequest.getName()).type(storeCreationRequest.getType())
                 .city(storeCreationRequest.getCity()).build();
 
-        this.useCase.save(store);
+        final var storeId = this.useCase.save(store);
 
-        return HttpResponse.noContent();
+        return HttpResponse.status(HttpStatus.CREATED).header("store_id", storeId);
     }
 
     @Get(produces = "application/json")
