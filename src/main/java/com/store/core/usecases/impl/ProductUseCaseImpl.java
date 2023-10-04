@@ -3,6 +3,7 @@ package com.store.core.usecases.impl;
 import com.store.core.activities.CalculateInflationActivity;
 import com.store.core.dataprovider.PriceDataProvider;
 import com.store.core.dataprovider.ProductDataProvider;
+import com.store.core.model.Price;
 import com.store.core.model.Product;
 import com.store.core.model.ProductInflation;
 import com.store.core.usecases.ProductUseCase;
@@ -41,8 +42,16 @@ public class ProductUseCaseImpl implements ProductUseCase {
             throw new RuntimeException("There is no enough data of prices to compare");
         }
 
-        final var firstPrice = priceList.get(0).getPrice();
-        final var lastPrice = priceList.get(priceList.size() - 1).getPrice();
+        final Price firstPriceModel = priceList.get(0);
+        final Price lastPriceModel = priceList.get(priceList.size() - 1);
+
+        if (firstPriceModel.getCreationDate().getMonthValue() == lastPriceModel.getCreationDate().getMonthValue()) {
+            throw new RuntimeException("There is no enough data of prices to compare, it's necessary at least 2 months to compare the inflation");
+        }
+
+        final var firstPrice = firstPriceModel.getPrice();
+        final var lastPrice = lastPriceModel.getPrice();
+
         final var inflationPercentage = calculateInflationActivity.execute(firstPrice, lastPrice);
 
         return ProductInflation.builder().productId(id).firstPrice(firstPrice).lastPrice(lastPrice)
