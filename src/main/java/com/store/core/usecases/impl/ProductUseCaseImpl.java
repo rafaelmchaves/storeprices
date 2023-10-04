@@ -38,6 +38,19 @@ public class ProductUseCaseImpl implements ProductUseCase {
 
         final var priceList = this.priceDataProvider.findAllByProductIdBetweenDates(id, startDate, endDate);
 
+        checkIfDataIsValidToCalculateProductInflation(priceList);
+
+        final var firstPrice = priceList.get(0).getPrice();
+        final var lastPrice = priceList.get(priceList.size() - 1).getPrice();
+
+        final var inflationPercentage = calculateInflationActivity.execute(firstPrice, lastPrice);
+
+        return ProductInflation.builder().productId(id).firstPrice(firstPrice).lastPrice(lastPrice)
+                .startDate(startDate).endDate(endDate)
+                .percentage(inflationPercentage).build();
+    }
+
+    private void checkIfDataIsValidToCalculateProductInflation(List<Price> priceList) {
         if (priceList.isEmpty() || priceList.size() == 1) {
             throw new RuntimeException("There is no enough data of prices to compare");
         }
@@ -48,15 +61,6 @@ public class ProductUseCaseImpl implements ProductUseCase {
         if (firstPriceModel.getCreationDate().getMonthValue() == lastPriceModel.getCreationDate().getMonthValue()) {
             throw new RuntimeException("There is no enough data of prices to compare, it's necessary at least 2 months to compare the inflation");
         }
-
-        final var firstPrice = firstPriceModel.getPrice();
-        final var lastPrice = lastPriceModel.getPrice();
-
-        final var inflationPercentage = calculateInflationActivity.execute(firstPrice, lastPrice);
-
-        return ProductInflation.builder().productId(id).firstPrice(firstPrice).lastPrice(lastPrice)
-                .startDate(startDate).endDate(endDate)
-                .percentage(inflationPercentage).build();
     }
 
 }
