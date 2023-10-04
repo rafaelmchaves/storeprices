@@ -1,5 +1,6 @@
 package com.store.core.usecases.impl;
 
+import com.store.core.activities.CalculateInflationActivity;
 import com.store.core.dataprovider.PriceDataProvider;
 import com.store.core.dataprovider.ProductDataProvider;
 import com.store.core.model.Product;
@@ -8,8 +9,6 @@ import com.store.core.usecases.ProductUseCase;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,6 +19,8 @@ public class ProductUseCaseImpl implements ProductUseCase {
     private final ProductDataProvider productDataProvider;
 
     private final PriceDataProvider priceDataProvider;
+
+    private final CalculateInflationActivity calculateInflationActivity;
 
     @Override
     public String save(Product product) {
@@ -42,16 +43,11 @@ public class ProductUseCaseImpl implements ProductUseCase {
 
         final var firstPrice = priceList.get(0).getPrice();
         final var lastPrice = priceList.get(priceList.size() - 1).getPrice();
-        final var inflationPercentage = calculate(firstPrice, lastPrice);
+        final var inflationPercentage = calculateInflationActivity.execute(firstPrice, lastPrice);
 
         return ProductInflation.builder().productId(id).firstPrice(firstPrice).lastPrice(lastPrice)
                 .startDate(startDate).endDate(endDate)
                 .percentage(inflationPercentage).build();
     }
 
-    private BigDecimal calculate(BigDecimal firstPrice, BigDecimal lastPrice) {
-        return (lastPrice.subtract(firstPrice))
-                .divide(lastPrice, RoundingMode.DOWN)
-                .multiply(BigDecimal.valueOf(100));
-    }
 }
