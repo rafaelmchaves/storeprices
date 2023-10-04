@@ -8,6 +8,8 @@ import com.store.core.usecases.ProductUseCase;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,9 +35,23 @@ public class ProductUseCaseImpl implements ProductUseCase {
     public ProductInflation calculateInflation(String id, LocalDate startDate, LocalDate endDate) {
 
         final var priceList = this.priceDataProvider.findAllByProductIdBetweenDates(id, startDate, endDate);
-        //TODO find all stored prices between startDate and endDate by id
-        //TODO calculate the inflation
 
-        return null;
+        if (priceList.isEmpty() || priceList.size() == 1) {
+            throw new RuntimeException("There is no enough data of prices to compare");
+        }
+
+        final var firstPrice = priceList.get(0).getPrice();
+        final var lastPrice = priceList.get(priceList.size() - 1).getPrice();
+        final var inflationPercentage = calculate(firstPrice, lastPrice);
+
+        return ProductInflation.builder().productId(id).firstPrice(firstPrice).lastPrice(lastPrice)
+                .startDate(startDate).endDate(endDate)
+                .percentage(inflationPercentage).build();
+    }
+
+    private BigDecimal calculate(BigDecimal firstPrice, BigDecimal lastPrice) {
+        return (lastPrice.subtract(firstPrice))
+                .divide(lastPrice, RoundingMode.DOWN)
+                .multiply(BigDecimal.valueOf(100));
     }
 }

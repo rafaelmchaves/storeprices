@@ -6,6 +6,7 @@ import com.store.core.usecases.ProductUseCase;
 import com.store.infrastructure.input.controller.requests.AttributeRequest;
 import com.store.infrastructure.input.controller.requests.ProductRequest;
 import com.store.infrastructure.input.controller.response.AttributeResponse;
+import com.store.infrastructure.input.controller.response.ProductInflationResponse;
 import com.store.infrastructure.input.controller.response.ProductResponse;
 import io.micronaut.data.annotation.Query;
 import io.micronaut.http.HttpResponse;
@@ -46,12 +47,20 @@ public class ProductController {
     }
 
     @Get(produces = "application/json", value = "/{id}/calculate-inflation")
-    public HttpResponse<Void> calculateInflation(@PathVariable String id, @QueryValue LocalDate startDate,
+    public HttpResponse<ProductInflationResponse> calculateInflation(@PathVariable String id, @QueryValue LocalDate startDate,
                                                  @QueryValue LocalDate endDate) {
 
-        this.productUseCase.calculateInflation(id, startDate, endDate);
+        final var productInflation = this.productUseCase.calculateInflation(id, startDate, endDate);
 
-        return HttpResponse.ok();
+        return HttpResponse.ok(
+                ProductInflationResponse.builder().id(productInflation.getProductId())
+                        .firstPrice(productInflation.getFirstPrice())
+                        .lastPrice(productInflation.getLastPrice())
+                        .startDate(productInflation.getStartDate())
+                        .endDate(productInflation.getEndDate())
+                        .percentage(productInflation.getPercentage())
+                        .build()
+        );
     }
 
     private static Product buildProduct(ProductRequest productRequest, AttributeRequest attributeRequest) {

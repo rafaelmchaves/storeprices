@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 public class ProductInflation {
 
-    private String id;
+    private String productId;
     private BigDecimal firstPrice;
     private BigDecimal lastPrice;
     private BigDecimal percentage;
