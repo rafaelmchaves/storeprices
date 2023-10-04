@@ -9,6 +9,6 @@ public interface PriceDataProvider {
 
     void add(Price price);
 
-    List<Price> findAll(String productId, LocalDate startDate, LocalDate endDate);
+    List<Price> findAllByProductIdBetweenDates(String productId, LocalDate startDate, LocalDate endDate);
 
 }

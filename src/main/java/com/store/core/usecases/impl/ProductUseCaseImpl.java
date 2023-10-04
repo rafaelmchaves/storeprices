@@ -32,7 +32,7 @@ public class ProductUseCaseImpl implements ProductUseCase {
     @Override
     public ProductInflation calculateInflation(String id, LocalDate startDate, LocalDate endDate) {
 
-        final var priceList = this.priceDataProvider.findAll(id, startDate, endDate);
+        final var priceList = this.priceDataProvider.findAllByProductIdBetweenDates(id, startDate, endDate);
         //TODO find all stored prices between startDate and endDate by id
         //TODO calculate the inflation
 

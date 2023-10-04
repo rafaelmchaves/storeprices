@@ -16,6 +16,6 @@ import java.util.List;
 public interface PriceRepository extends CrudRepository<PriceEntity, ObjectId> {
 
     @MongoFindQuery(filter = "{ 'product.id': :productId, creationDate: { $gte: :startDate, $lte: :endDate} } ")
-    List<PriceEntity> findAllByProductId(String productId, LocalDate startDate, LocalDate endDate);
+    List<PriceEntity> findAllByProductIdBetweenDates(String productId, LocalDate startDate, LocalDate endDate);
 
 }
