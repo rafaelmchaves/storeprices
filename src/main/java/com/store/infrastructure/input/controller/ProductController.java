@@ -7,6 +7,7 @@ import com.store.infrastructure.input.controller.requests.AttributeRequest;
 import com.store.infrastructure.input.controller.requests.ProductRequest;
 import com.store.infrastructure.input.controller.response.AttributeResponse;
 import com.store.infrastructure.input.controller.response.ProductResponse;
+import io.micronaut.data.annotation.Query;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpResponse;
@@ -14,6 +15,7 @@ import io.micronaut.http.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -41,6 +43,15 @@ public class ProductController {
         final var response = foundProducts.stream().map(ProductController::buildProductResponse).toList();
 
         return HttpResponse.ok(response);
+    }
+
+    @Get(produces = "application/json", value = "/{id}/calculate-inflation")
+    public HttpResponse<Void> calculateInflation(@PathVariable String id, @QueryValue LocalDate startDate,
+                                                 @QueryValue LocalDate endDate) {
+
+        this.productUseCase.calculateInflation(id, startDate, endDate);
+
+        return HttpResponse.ok();
     }
 
     private static Product buildProduct(ProductRequest productRequest, AttributeRequest attributeRequest) {

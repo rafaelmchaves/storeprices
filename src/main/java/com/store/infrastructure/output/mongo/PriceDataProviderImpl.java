@@ -9,7 +9,9 @@ import com.store.infrastructure.output.mongo.repository.PriceRepository;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Singleton
@@ -31,5 +33,16 @@ public class PriceDataProviderImpl implements PriceDataProvider {
 
         priceRepository.save(priceEntity);
 
+    }
+
+    @Override
+    public List<Price> findAll(String productId, LocalDate startDate, LocalDate endDate) {
+        final var priceList = priceRepository.findAllByProductId(productId, startDate, endDate);
+
+        return priceList.stream().map(price -> Price.builder().price(price.getPrice())
+                .product(productMapper.toProductModel(price.getProduct()))
+                .store(storeMapper.toStoreModel(price.getStore()))
+                .creationDate(price.getCreationDate().toLocalDate())
+                .build()).toList();
     }
 }

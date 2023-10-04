@@ -41,4 +41,17 @@ public class ProductMapper {
                 .build();
     }
 
+    public Product toProductModel(ProductEmbedded productEmbedded) {
+        final var attributeResult = productEmbedded.getAttributes();
+        return Product.builder()
+                .id(productEmbedded.getId())
+                .name(productEmbedded.getName()).brand(productEmbedded.getBrand())
+                .type(productEmbedded.getType())
+                .attribute(Attribute.builder().amountType(attributeResult.getAmountType())
+                        .amount(attributeResult.getAmount())
+                        .colours(attributeResult.getColours())
+                        .build())
+                .build();
+    }
+
 }

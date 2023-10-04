@@ -21,6 +21,14 @@ public class StoreMapper {
                 .build();
     }
 
+    public Store toStoreModel(final StoreEmbedded storeEmbedded) {
+        return Store.builder().id(storeEmbedded.getId())
+                .name(storeEmbedded.getName())
+                .city(storeEmbedded.getCity())
+                .type(storeEmbedded.getType())
+                .build();
+    }
+
     public StoreEmbedded toStoreEmbedded(final Store store) {
         return StoreEmbedded.builder().id(store.getId()).name(store.getName()).city(store.getCity())
                 .type(store.getType()).build();
