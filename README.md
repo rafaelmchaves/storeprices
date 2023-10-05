@@ -5,7 +5,7 @@ Adding prices of a product and calculating the inflation during a period by prod
 ## Clean Arch Example
 
 This code was based in clean arch principles, dividing the code between infrastructure and non-infrastructure(into core package) classes.
-![cleanArchExample.png](cleanArchExample.png)
+![cleanArchExample.png](images/cleanArchExample.png)
 
 ## Micronaut 4.1.2 Documentation
 
