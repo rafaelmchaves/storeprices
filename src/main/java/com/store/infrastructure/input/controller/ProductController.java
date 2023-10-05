@@ -9,7 +9,6 @@ import com.store.infrastructure.input.controller.requests.ProductRequest;
 import com.store.infrastructure.input.controller.response.AttributeResponse;
 import com.store.infrastructure.input.controller.response.ProductInflationResponse;
 import com.store.infrastructure.input.controller.response.ProductResponse;
-import io.micronaut.data.annotation.Query;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpResponse;
