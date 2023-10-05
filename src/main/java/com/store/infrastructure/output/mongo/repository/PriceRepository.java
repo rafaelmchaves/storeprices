@@ -9,7 +9,6 @@ import io.micronaut.data.repository.CrudRepository;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @MongoRepository
