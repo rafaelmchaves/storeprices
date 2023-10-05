@@ -16,9 +16,7 @@ public class StoreUseCaseImpl implements StoreUseCase {
 
     @Override
     public String save(Store store) {
-
         return this.storeDataProvider.save(store);
-
     }
 
     @Override

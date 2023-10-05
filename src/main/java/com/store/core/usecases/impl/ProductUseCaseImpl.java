@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -69,7 +70,8 @@ public class ProductUseCaseImpl implements ProductUseCase {
 
     private BigDecimal getMonthAverageByProductType(ProductType productType, LocalDate date) {
         final var monthStartDate = date.withDayOfMonth(1);
-        final var monthEndDate = date.withDayOfMonth(30);
+
+        final var monthEndDate = date.withDayOfMonth(date.getMonth().equals(Month.FEBRUARY) ? 28 : 30);
 
         final var firstMontPriceList = this.priceDataProvider.findAllByProductTypeBetweenDates(productType, monthStartDate, monthEndDate);
 
