@@ -2,6 +2,7 @@ package com.store.infrastructure.output.mongo;
 
 import com.store.core.dataprovider.PriceDataProvider;
 import com.store.core.model.Price;
+import com.store.core.model.ProductType;
 import com.store.infrastructure.output.mongo.entity.PriceEntity;
 import com.store.infrastructure.output.mongo.mapper.ProductMapper;
 import com.store.infrastructure.output.mongo.mapper.StoreMapper;
@@ -39,7 +40,18 @@ public class PriceDataProviderImpl implements PriceDataProvider {
     public List<Price> findAllByProductIdBetweenDates(String productId, LocalDate startDate, LocalDate endDate) {
         final var priceList = priceRepository.findAllByProductIdBetweenDates(productId, startDate, endDate);
 
-        return priceList.stream().map(price -> Price.builder().price(price.getPrice())
+        return buildPriceModel(priceList);
+    }
+
+    @Override
+    public List<Price> findAllByProductTypeBetweenDates(ProductType productType, LocalDate startDate, LocalDate endDate) {
+        final var result = priceRepository.findAllByProductTypeBetweenDates(productType, startDate, endDate);
+
+        return buildPriceModel(result);
+    }
+
+    private List<Price> buildPriceModel(List<PriceEntity> result) {
+        return result.stream().map(price -> Price.builder().price(price.getPrice())
                 .product(productMapper.toProductModel(price.getProduct()))
                 .store(storeMapper.toStoreModel(price.getStore()))
                 .creationDate(price.getCreationDate().toLocalDate())

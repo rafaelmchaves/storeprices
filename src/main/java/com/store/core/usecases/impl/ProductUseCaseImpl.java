@@ -6,10 +6,13 @@ import com.store.core.dataprovider.ProductDataProvider;
 import com.store.core.model.Price;
 import com.store.core.model.Product;
 import com.store.core.model.ProductInflation;
+import com.store.core.model.ProductType;
 import com.store.core.usecases.ProductUseCase;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,6 +51,31 @@ public class ProductUseCaseImpl implements ProductUseCase {
         return ProductInflation.builder().productId(id).firstPrice(firstPrice).lastPrice(lastPrice)
                 .startDate(startDate).endDate(endDate)
                 .percentage(inflationPercentage).build();
+    }
+
+    @Override
+    public ProductInflation calculateInflation(ProductType productType, LocalDate startDate, LocalDate endDate) {
+
+        final var firstMonthAveragePrice = getMonthAverageByProductType(productType, startDate);
+
+        final var lastMonthAveragePrice = getMonthAverageByProductType(productType, endDate);
+
+        final var inflationPercentage = calculateInflationActivity.execute(firstMonthAveragePrice, lastMonthAveragePrice);
+
+        return ProductInflation.builder().productType(productType).firstPrice(firstMonthAveragePrice).lastPrice(lastMonthAveragePrice)
+                .startDate(startDate).endDate(endDate)
+                .percentage(inflationPercentage).build();
+    }
+
+    private BigDecimal getMonthAverageByProductType(ProductType productType, LocalDate date) {
+        final var monthStartDate = date.withDayOfMonth(1);
+        final var monthEndDate = date.withDayOfMonth(30);
+
+        final var firstMontPriceList = this.priceDataProvider.findAllByProductTypeBetweenDates(productType, monthStartDate, monthEndDate);
+
+        final var price = firstMontPriceList.stream().map(Price::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+
+        return price.divide(BigDecimal.valueOf(firstMontPriceList.size()), RoundingMode.DOWN);
     }
 
     private void checkIfDataIsValidToCalculateProductInflation(List<Price> priceList) {

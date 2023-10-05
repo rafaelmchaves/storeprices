@@ -11,6 +11,9 @@ import java.time.LocalDate;
 public class ProductInflation {
 
     private String productId;
+
+    private ProductType productType;
+
     private BigDecimal firstPrice;
     private BigDecimal lastPrice;
     private BigDecimal percentage;

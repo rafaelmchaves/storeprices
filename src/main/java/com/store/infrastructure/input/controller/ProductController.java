@@ -2,6 +2,7 @@ package com.store.infrastructure.input.controller;
 
 import com.store.core.model.Attribute;
 import com.store.core.model.Product;
+import com.store.core.model.ProductType;
 import com.store.core.usecases.ProductUseCase;
 import com.store.infrastructure.input.controller.requests.AttributeRequest;
 import com.store.infrastructure.input.controller.requests.ProductRequest;
@@ -47,10 +48,27 @@ public class ProductController {
     }
 
     @Get(produces = "application/json", value = "/{id}/calculate-inflation")
-    public HttpResponse<ProductInflationResponse> calculateInflation(@PathVariable String id, @QueryValue LocalDate startDate,
+    public HttpResponse<ProductInflationResponse> calculateInflationById(@PathVariable String id, @QueryValue LocalDate startDate,
                                                  @QueryValue LocalDate endDate) {
 
         final var productInflation = this.productUseCase.calculateInflation(id, startDate, endDate);
+
+        return HttpResponse.ok(
+                ProductInflationResponse.builder().id(productInflation.getProductId())
+                        .firstPrice(productInflation.getFirstPrice())
+                        .lastPrice(productInflation.getLastPrice())
+                        .startDate(productInflation.getStartDate())
+                        .endDate(productInflation.getEndDate())
+                        .percentage(productInflation.getPercentage())
+                        .build()
+        );
+    }
+
+    @Get(produces = "application/json", value = "/calculate-inflation")
+    public HttpResponse<ProductInflationResponse> calculateInflationByProductType(@QueryValue ProductType productType, @QueryValue LocalDate startDate,
+                                                                                  @QueryValue LocalDate endDate) {
+
+        final var productInflation = this.productUseCase.calculateInflation(productType, startDate, endDate);
 
         return HttpResponse.ok(
                 ProductInflationResponse.builder().id(productInflation.getProductId())
