@@ -3,11 +3,13 @@ package com.store.core.usecases.impl;
 import com.store.core.activities.CalculateInflationActivity;
 import com.store.core.dataprovider.PriceDataProvider;
 import com.store.core.dataprovider.ProductDataProvider;
+import com.store.core.exceptions.NotEnoughDataException;
 import com.store.core.model.Price;
 import com.store.core.model.Product;
 import com.store.core.model.ProductInflation;
 import com.store.core.model.ProductType;
 import com.store.core.usecases.ProductUseCase;
+import com.store.infrastructure.output.exceptions.ErrorCode;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
@@ -82,14 +84,14 @@ public class ProductUseCaseImpl implements ProductUseCase {
 
     private void checkIfDataIsValidToCalculateProductInflation(List<Price> priceList) {
         if (priceList.isEmpty() || priceList.size() == 1) {
-            throw new RuntimeException("There is no enough data of prices to compare");
+            throw new NotEnoughDataException("There is no enough data of prices to compare", ErrorCode.COD01.name());
         }
 
         final Price firstPriceModel = priceList.get(0);
         final Price lastPriceModel = priceList.get(priceList.size() - 1);
 
         if (firstPriceModel.getCreationDate().getMonthValue() == lastPriceModel.getCreationDate().getMonthValue()) {
-            throw new RuntimeException("There is no enough data of prices to compare, it's necessary at least 2 months to compare the inflation");
+            throw new NotEnoughDataException("There is no enough data of prices to compare, it's necessary at least 2 months to compare the inflation", ErrorCode.COD02.name());
         }
     }
 
