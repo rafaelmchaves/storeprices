@@ -1,6 +1,7 @@
 package com.store.core.usecases.impl;
 
 import com.store.core.activities.CalculateInflationActivity;
+import com.store.core.activities.GetMonthAverageByProductTypeActivity;
 import com.store.core.dataprovider.PriceDataProvider;
 import com.store.core.dataprovider.ProductDataProvider;
 import com.store.core.exceptions.NotEnoughDataException;
@@ -13,10 +14,7 @@ import com.store.infrastructure.output.exceptions.ErrorCode;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,6 +26,8 @@ public class ProductUseCaseImpl implements ProductUseCase {
     private final PriceDataProvider priceDataProvider;
 
     private final CalculateInflationActivity calculateInflationActivity;
+
+    private final GetMonthAverageByProductTypeActivity getMonthAverageByProductTypeActivity;
 
     @Override
     public String save(Product product) {
@@ -59,9 +59,9 @@ public class ProductUseCaseImpl implements ProductUseCase {
     @Override
     public ProductInflation calculateInflation(ProductType productType, LocalDate startDate, LocalDate endDate) {
 
-        final var firstMonthAveragePrice = getMonthAverageByProductType(productType, startDate);
+        final var firstMonthAveragePrice = this.getMonthAverageByProductTypeActivity.execute(productType, startDate);
 
-        final var lastMonthAveragePrice = getMonthAverageByProductType(productType, endDate);
+        final var lastMonthAveragePrice = this.getMonthAverageByProductTypeActivity.execute(productType, endDate);
 
         final var inflationPercentage = calculateInflationActivity.execute(firstMonthAveragePrice, lastMonthAveragePrice);
 
@@ -70,17 +70,6 @@ public class ProductUseCaseImpl implements ProductUseCase {
                 .percentage(inflationPercentage).build();
     }
 
-    private BigDecimal getMonthAverageByProductType(ProductType productType, LocalDate date) {
-        final var monthStartDate = date.withDayOfMonth(1);
-
-        final var monthEndDate = date.withDayOfMonth(date.getMonth().equals(Month.FEBRUARY) ? 28 : 30);
-
-        final var firstMontPriceList = this.priceDataProvider.findAllByProductTypeBetweenDates(productType, monthStartDate, monthEndDate);
-
-        final var price = firstMontPriceList.stream().map(Price::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
-
-        return price.divide(BigDecimal.valueOf(firstMontPriceList.size()), RoundingMode.DOWN);
-    }
 
     private void checkIfDataIsValidToCalculateProductInflation(List<Price> priceList) {
         if (priceList.isEmpty() || priceList.size() == 1) {
