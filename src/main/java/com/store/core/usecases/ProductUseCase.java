@@ -14,5 +14,6 @@ public interface ProductUseCase {
     List<Product> query(String name);
 
     ProductInflation calculateInflation(final String id, final LocalDate startDate, final LocalDate endDate);
+
     ProductInflation calculateInflation(final ProductType productType, final LocalDate startDate, final LocalDate endDate);
 }

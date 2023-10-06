@@ -22,11 +22,11 @@ public class GetMonthAverageByProductTypeActivity {
 
         final var monthEndDate = date.withDayOfMonth(date.getMonth().equals(Month.FEBRUARY) ? 28 : 30);
 
-        final var firstMontPriceList = this.priceDataProvider.findAllByProductTypeBetweenDates(productType, monthStartDate, monthEndDate);
+        final var monthPriceList = this.priceDataProvider.findAllByProductTypeBetweenDates(productType, monthStartDate, monthEndDate);
 
         //TODO throw an exception if the list is empty
-        final var price = firstMontPriceList.stream().map(Price::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+        final var price = monthPriceList.stream().map(Price::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
 
-        return price.divide(BigDecimal.valueOf(firstMontPriceList.size()), RoundingMode.DOWN);
+        return price.divide(BigDecimal.valueOf(monthPriceList.size()), RoundingMode.DOWN);
     }
 }
