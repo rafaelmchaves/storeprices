@@ -3,6 +3,7 @@ package com.store.infrastructure.input.controller;
 import com.store.core.model.Store;
 import com.store.core.usecases.StoreUseCase;
 import com.store.infrastructure.input.controller.requests.StoreCreationRequest;
+import com.store.infrastructure.input.controller.response.ProductInflationResponse;
 import com.store.infrastructure.input.controller.response.StoreResponse;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -11,6 +12,7 @@ import io.micronaut.http.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -41,5 +43,12 @@ public class StoreController {
                 .toList();
 
         return HttpResponse.ok(storeResponse);
+    }
+
+    @Get(produces = "application/json", value = "/{id}/calculate-inflation")
+    public HttpResponse<ProductInflationResponse> calculateInflation(@PathVariable String id, @QueryValue LocalDate startDate,
+                                                                     @QueryValue LocalDate endDate) {
+
+        return HttpResponse.ok();
     }
 }
