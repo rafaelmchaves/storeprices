@@ -50,6 +50,7 @@ public class StoreController {
                                                                      @QueryValue LocalDate endDate) {
 
 
+        useCase.calculateInflation(id, startDate, endDate);
         return HttpResponse.ok();
     }
 }
