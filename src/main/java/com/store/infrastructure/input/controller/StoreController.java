@@ -49,6 +49,7 @@ public class StoreController {
     public HttpResponse<ProductInflationResponse> calculateInflation(@PathVariable String id, @QueryValue LocalDate startDate,
                                                                      @QueryValue LocalDate endDate) {
 
+
         return HttpResponse.ok();
     }
 }
