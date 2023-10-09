@@ -13,4 +13,5 @@ public interface PriceDataProvider {
     List<Price> findAllByProductIdBetweenDates(String productId, LocalDate startDate, LocalDate endDate);
     List<Price> findAllByProductTypeBetweenDates(ProductType productType, LocalDate startDate, LocalDate endDate);
 
+    List<Price> findAllByStoreBetweenDates(String storeId, LocalDate startDate, LocalDate endDate);
 }

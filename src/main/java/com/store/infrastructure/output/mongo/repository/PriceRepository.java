@@ -20,4 +20,7 @@ public interface PriceRepository extends CrudRepository<PriceEntity, ObjectId> {
     @MongoFindQuery(filter = "{ 'product.type': :type, creationDate: { $gte: :startDate, $lte: :endDate} } ")
     List<PriceEntity> findAllByProductTypeBetweenDates(ProductType type, LocalDate startDate, LocalDate endDate);
 
+    @MongoFindQuery(filter = "{ 'store.id': :storeId, creationDate: { $gte: :startDate, $lte: :endDate} } ")
+    List<PriceEntity> findAllByStoreIdBetweenDates(String storeId, LocalDate startDate, LocalDate endDate);
+
 }

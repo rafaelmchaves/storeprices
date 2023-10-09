@@ -50,6 +50,13 @@ public class PriceDataProviderImpl implements PriceDataProvider {
         return buildPriceModel(result);
     }
 
+    @Override
+    public List<Price> findAllByStoreBetweenDates(String storeId, LocalDate startDate, LocalDate endDate) {
+       final var result = priceRepository.findAllByStoreIdBetweenDates(storeId, startDate, endDate);
+
+        return buildPriceModel(result);
+    }
+
     private List<Price> buildPriceModel(List<PriceEntity> result) {
         return result.stream().map(price -> Price.builder().price(price.getPrice())
                 .product(productMapper.toProductModel(price.getProduct()))
