@@ -1,5 +1,6 @@
 package com.store.infrastructure.input.controller;
 
+import com.store.core.model.ProductInflation;
 import com.store.core.model.Store;
 import com.store.core.usecases.StoreUseCase;
 import com.store.infrastructure.input.controller.requests.StoreCreationRequest;
@@ -49,8 +50,10 @@ public class StoreController {
     public HttpResponse<ProductInflationResponse> calculateInflation(@PathVariable String id, @QueryValue LocalDate startDate,
                                                                      @QueryValue LocalDate endDate) {
 
+        final var productInflation = useCase.calculateInflation(id, startDate, endDate);
+        final var response = ProductInflationResponse.builder().percentage(productInflation.getPercentage())
+                .startDate(productInflation.getStartDate()).endDate(productInflation.getEndDate()).build();
 
-        useCase.calculateInflation(id, startDate, endDate);
-        return HttpResponse.ok();
+        return HttpResponse.ok(response);
     }
 }
