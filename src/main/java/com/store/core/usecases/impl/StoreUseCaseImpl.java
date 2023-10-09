@@ -28,6 +28,8 @@ public class StoreUseCaseImpl implements StoreUseCase {
 
     @Override
     public ProductInflation calculateInflation(String storeId, LocalDate startDate, LocalDate endDate) {
+
+
         return null;
     }
 }

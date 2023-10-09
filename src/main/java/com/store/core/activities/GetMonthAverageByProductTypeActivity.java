@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.Month;
 
 @RequiredArgsConstructor
 @Singleton
@@ -19,10 +18,14 @@ public class GetMonthAverageByProductTypeActivity {
 
     private final PriceDataProvider priceDataProvider;
 
-    public BigDecimal execute(ProductType productType, LocalDate date) {
-        final var monthStartDate = date.withDayOfMonth(1);
+    private final GetMonthStartDateActivity getMonthStartDateActivity;
 
-        final var monthEndDate = date.withDayOfMonth(date.getMonth().equals(Month.FEBRUARY) ? 28 : 30);
+    private final GetMonthEndDateActivity getMonthEndDateActivity;
+
+    public BigDecimal execute(ProductType productType, LocalDate date) {
+        final var monthStartDate = getMonthStartDateActivity.execute(date);
+
+        final var monthEndDate = getMonthEndDateActivity.execute(date);
 
         final var monthPriceList = this.priceDataProvider.findAllByProductTypeBetweenDates(productType, monthStartDate, monthEndDate);
 
