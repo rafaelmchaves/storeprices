@@ -13,6 +13,7 @@ public class ProductInflation {
     private String productId;
 
     private ProductType productType;
+    private String storeId;
 
     private BigDecimal firstPrice;
     private BigDecimal lastPrice;

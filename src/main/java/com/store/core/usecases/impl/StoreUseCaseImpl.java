@@ -1,5 +1,6 @@
 package com.store.core.usecases.impl;
 
+import com.store.core.activities.CalculateInflationActivity;
 import com.store.core.activities.GetMonthAverageByStore;
 import com.store.core.dataprovider.StoreDataProvider;
 import com.store.core.model.ProductInflation;
@@ -19,6 +20,8 @@ public class StoreUseCaseImpl implements StoreUseCase {
 
     private final GetMonthAverageByStore getMonthAverageByStore;
 
+    private final CalculateInflationActivity calculateInflationActivity;
+
     @Override
     public String save(Store store) {
         return this.storeDataProvider.save(store);
@@ -36,7 +39,10 @@ public class StoreUseCaseImpl implements StoreUseCase {
 
         final var lastMonthAveragePrice =this.getMonthAverageByStore.execute(storeId, endDate);
 
-        return ProductInflation.builder().build();
+        final var inflationPercentage = this.calculateInflationActivity.execute(firstMonthAveragePrice, lastMonthAveragePrice);
+
+        return ProductInflation.builder().storeId(storeId).firstPrice(firstMonthAveragePrice).lastPrice(lastMonthAveragePrice)
+                .startDate(startDate).endDate(endDate).percentage(inflationPercentage).build();
 
     }
 }

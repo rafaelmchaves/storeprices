@@ -29,7 +29,7 @@ public class GetMonthAverageByStore {
 
         if (priceList.isEmpty()) {
             final var errorMessage = String.format("There is no enough data for the store - id: %s, date: %s", storeId, date);
-            throw new NotEnoughDataException(errorMessage, ErrorCode.COD03.name());
+            throw new NotEnoughDataException(errorMessage, ErrorCode.COD04.name());
         }
 
         final var price = priceList.stream().map(Price::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
