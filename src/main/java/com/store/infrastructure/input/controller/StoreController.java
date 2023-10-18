@@ -1,6 +1,5 @@
 package com.store.infrastructure.input.controller;
 
-import com.store.core.model.ProductInflation;
 import com.store.core.model.Store;
 import com.store.core.usecases.StoreUseCase;
 import com.store.infrastructure.input.controller.requests.StoreCreationRequest;
