@@ -5,6 +5,8 @@ Adding prices of a product and calculating the inflation during a period by prod
 ## Clean Arch Example
 
 This code was based in clean arch principles, dividing the code between infrastructure and non-infrastructure(into core package) classes.
+
+For a small software approach, like microservice, I think the following directory distribution/model fits with a good software design.
 ![cleanArchExample.png](images/cleanArchExample.png)
 
 ## Micronaut 4.1.2 Documentation
